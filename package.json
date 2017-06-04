@@ -1,0 +1,32 @@
+{
+	"name": "currency-converter",
+	"version": "0.0.1",
+	"scripts": {
+		"ib": "tsc",
+		"dev": "tsc && concurrently \"tsc -w\" lite-server"
+	},
+	"dependencies": {
+		"@angular/common": "^4.1.3",
+		"@angular/compiler": "^4.1.3",
+		"@angular/core": "^4.1.3",
+		"@angular/forms": "^4.1.3",
+		"@angular/http": "^4.1.3",
+		"@angular/platform-browser": "^4.1.3",
+		"@angular/platform-browser-dynamic": "^4.1.3",
+		"@angular/router": "^4.1.3",
+		"@angular/upgrade": "^4.1.3",
+		"bootstrap-sass": "^3.3.7",
+		"core-js": "^2.4.1",
+		"jquery": "^3.2.1",
+		"moment": "^2.18.1",
+		"rxjs": "^5.4.0",
+		"systemjs": "^0.20.12",
+		"zone.js": "^0.8.11"
+	},
+	"devDependencies": {
+		"@types/core-js": "^0.9.41",
+		"concurrently": "^3.4.0",
+		"lite-server": "^2.3.0",
+		"typescript": "^2.3.3"
+	}
+}
