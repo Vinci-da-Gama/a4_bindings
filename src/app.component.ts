@@ -25,14 +25,25 @@ import { Component } from '@angular/core';
 			<cite>{{targetAmt4}}</cite> GRP
 		</p>
 
-		<br /> L29: two-way binding -- <span>Using Getter function<span>
-		<input type="number" [value]="baseAmt5" 
-			(input)="updateInputEvent($event.target.value)" /> USD = 
-		<strong [innerText]="targetAmt5"></strong> GBP
+		<br /> L29: two-way binding -- example 5 -- <span>Using Getter function<span>
+		<br />
+		Convert: <input type="number" [ngModel]="baseAmt5" 
+			(input)="update2ways($event.target.value)" /> USD
 		<p>
 			<b>{{baseAmt5}}</b> US dollars =
-			<cite>{{targetAmt5}}</cite> GRP
+			<cite>{{getterTargetAmt5}}</cite> GRP
 		</p>
+
+		<br /> L29: (8:50) two-way binding -- example 6: final 2ways-binding -- 
+		<span>2 ways binding [(ngModel)]= "variable"<span>
+		<br />
+		Convert: <input type="number" [(ngModel)]="baseAmt6" /> USD
+		<p>
+			<b>{{baseAmt6}}</b> US dollars =
+			<cite>{{getterTargetAmt6}}</cite> GRP
+		</p>
+		
+		<converter-with-style></converter-with-style>
     `,
 	styles: [
 		`
@@ -62,14 +73,16 @@ export class AppComponent {
 
 	exchangeRate2: number = 0.85;
 	baseAmt5: number = 1;
-	targetAmt5: number = this.exchangeRate2;
+
+	exchangeRate3: number = 0.66;
+	baseAmt6: number = 1;
 	
 	update(theBaseAmtValue: string) {
-		console.info('34 -- should update : ', theBaseAmtValue, 'as a', typeof theBaseAmtValue);
+		console.info('68 -- should update : ', theBaseAmtValue, 'as a', typeof theBaseAmtValue);
 		this.targetAmt2 = parseFloat(theBaseAmtValue)*this.exchangeRate;
 	}
 	updateInputEvent(eventTargetValue: string) {
-		console.log('43 -- updateInputEvent -- event is: ', event);
+		console.log('72 -- updateInputEvent -- event is: ', event);
 		this.targetAmt3 = parseFloat(eventTargetValue)*this.exchangeRate0;
 	}
 
@@ -77,11 +90,34 @@ export class AppComponent {
 	updateBaseAmt(eventTargetValue: string) {
 		this.baseAmt4 = parseFloat(eventTargetValue);
 	}
+
 	get targetAmt4() {
 		return this.baseAmt4 * this.exchangeRate1;
 	}
 	/**
 	 * End example 4
+	 */
+
+	// example 5
+	update2ways(eventInput: string) {
+		console.log('90 -- updateInputEvent -- event is: ', event);
+		this.baseAmt5 = parseFloat(eventInput); 
+	}
+	get getterTargetAmt5() {
+		return this.baseAmt5 * this.exchangeRate2;
+	}
+	/**
+	 * End example 5
+	 */
+
+	// example 6 -- final 2-ways-binding
+	get getterTargetAmt6() {
+		let amount: number = this.baseAmt6 * this.exchangeRate3;
+		console.log('116 -- amount is: '+amount);
+		return amount;
+	}
+	/**
+	 * End Example 6
 	 */
 
 }
