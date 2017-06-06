@@ -59,9 +59,16 @@ import { ExchangeRateService } from './services/ExchangeRate.Service';
         </cite>
 
         <p>
-            s5L37 -- custome-pipe (write our own pipe)
+            s5L37 -- custome-pipe <strong>(write our own pipe)</strong>
         </p>
-        
+		Convert: 
+        <input type="number" [(ngModel)]="baseAmt3" [ngClass]="{error: inInvalid(baseAmt3), warning: baseAmt3 <= 0}" />
+        <currency-type-selector [(culler)]="baseCurrency2"></currency-type-selector>
+        = <cite>{{getterTargetAmt3 | fixedNum: 3}}</cite>
+        <currency-type-selector [(culler)]="targetCurrency2"></currency-type-selector>
+        <ng-template [ngIf]="inInvalid(baseAmt3)">
+            <p class="errfont">The base amount is incorrect.</p>
+        </ng-template>
     `,
 	styles: [
 		`
@@ -104,6 +111,10 @@ export class ConverterStyle {
     targetCurrency1: string = 'USD';
     baseAmt2:number = 1;
 
+    baseCurrency2: string = 'GBP';
+    targetCurrency2: string = 'USD';
+    baseAmt3:number = 1;
+
     constructor ( private ers: ExchangeRateService ) {}
 
     get getterTargetAmt() {
@@ -122,6 +133,11 @@ export class ConverterStyle {
     get getterTargetAmt2() {
         const exchangeRate2: number = this.ers.fetchExchangeRate(this.baseCurrency1, this.targetCurrency1);
         return this.baseAmt2 * exchangeRate2;
+    }
+
+    get getterTargetAmt3() {
+        const exchangeRate3: number = this.ers.fetchExchangeRate(this.baseCurrency2, this.targetCurrency2);
+        return this.baseAmt3 * exchangeRate3;
     }
 
     inFinite(val: number) {
