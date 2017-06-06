@@ -28,11 +28,40 @@ import { ExchangeRateService } from './services/ExchangeRate.Service';
 			<b>{{baseAmt0}}</b> US dollars =
 			<cite>{{getterTargetAmt0}}</cite> GRP
 		</p>
-        L31: <span>Services with provider  --- get exchange rate from service <span>
+        L31: <span>Services with provider and ngFor and event 2 way binding to do selection  --- get exchange rate from service <span>
 		<br />
 		Convert: 
-        <input type="number" [(ngModel)]="baseAmt1" /> {{baseCurrency}} = 
-        <cite>{{getterTargetAmt1}}</cite> {{targetCurrency}}
+        <input type="number" [(ngModel)]="baseAmt1" />
+        <currency-type-selector [(culler)]="baseCurrency"></currency-type-selector>
+        = <cite>{{getterTargetAmt1}}</cite>
+        <currency-type-selector [(culler)]="targetCurrency"></currency-type-selector>
+        <br />
+        <br />
+
+        L35: <span>ngIf -- <b>prevent choose same types of both currencies and number pipe</b>.<span>
+		<br />
+		Convert: 
+        <input type="number" [(ngModel)]="baseAmt2" [ngClass]="{error: inInvalid(baseAmt2), warning: baseAmt2 <= 0}" />
+        <currency-type-selector [(culler)]="baseCurrency1"></currency-type-selector>
+        = <cite>{{getterTargetAmt2 | number: '1.2-2'}}</cite>
+        <currency-type-selector [(culler)]="targetCurrency1"></currency-type-selector>
+        <ng-template [ngIf]="inInvalid(baseAmt2)">
+            <p class="errfont">The base amount is incorrect.</p>
+        </ng-template>
+
+        <!-- <p class="errfont" *ngIf="inInvalid(baseAmt2)">The base amount is incorrect.</p> -->
+        <p>
+            s5L36 -- pipe
+        </p>
+        <cite>{{now | date:'dd/mm/yyyy'}}</cite>
+        <cite>
+            {{ {name: "jsonPipe"} | json }}
+        </cite>
+
+        <p>
+            s5L37 -- custome-pipe (write our own pipe)
+        </p>
+        
     `,
 	styles: [
 		`
@@ -42,6 +71,10 @@ import { ExchangeRateService } from './services/ExchangeRate.Service';
 			}
             .error {
                 background-color: red;
+            }
+            .errfont {
+                color: red;
+                font-weight: bold;
             }
             .warning {
                 background-color: orange;
@@ -54,6 +87,9 @@ import { ExchangeRateService } from './services/ExchangeRate.Service';
 	]
 })
 export class ConverterStyle {
+
+    now = Date.now();
+
     exchangeRate:number = 0.7;
     baseAmt:number = 1;
 
@@ -63,6 +99,10 @@ export class ConverterStyle {
     baseCurrency: string = 'USD';
     targetCurrency: string = 'GBP';
     baseAmt1:number = 1;
+
+    baseCurrency1: string = 'EUR';
+    targetCurrency1: string = 'USD';
+    baseAmt2:number = 1;
 
     constructor ( private ers: ExchangeRateService ) {}
 
@@ -77,6 +117,11 @@ export class ConverterStyle {
     get getterTargetAmt1() {
         const exchangeRate1: number = this.ers.fetchExchangeRate(this.baseCurrency, this.targetCurrency);
         return this.baseAmt1 * exchangeRate1;
+    }
+
+    get getterTargetAmt2() {
+        const exchangeRate2: number = this.ers.fetchExchangeRate(this.baseCurrency1, this.targetCurrency1);
+        return this.baseAmt2 * exchangeRate2;
     }
 
     inFinite(val: number) {
